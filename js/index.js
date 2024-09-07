@@ -36,40 +36,53 @@ document.addEventListener('DOMContentLoaded', function() {
     const todoInput = document.getElementById('todoInput');
     const todoList = document.getElementById('todoList');
     const errorMessage = document.getElementById('error-message');
+    const clearAllButton = document.getElementById('clearAllButton');
+
+    function updateTodoCount() {
+        const todoCount = todoList.children.length;
+        document.getElementById('todoCount').textContent = `Sizning ro'yxatda ${todoCount} ta vazifa bor.`;
+    }
 
     addTodoButton.addEventListener('click', function() {
         const todoText = todoInput.value.trim();
 
-
         if (todoText.length < 5) {
-            errorMessage.textContent = 'Vazifa kamida 5 ta harifdan iborat bo‘lishi kerak.';
+            errorMessage.textContent = '5 ta xarifadan kam';
             return;
         }
 
-        errorMessage.textContent = ''; 
+        errorMessage.textContent = '';
 
         if (todoText) {
             const li = document.createElement('li');
             li.textContent = todoText;
 
             const removeButton = document.createElement('button');
-            removeButton.textContent = 'X'; 
+            removeButton.textContent = 'X';
             removeButton.className = 'remove';
             removeButton.addEventListener('click', function() {
+                li.remove();
+                updateTodoCount(); 
             });
 
             li.appendChild(removeButton);
             todoList.appendChild(li);
-            todoInput.value = ''; 
+            todoInput.value = '';
+            updateTodoCount(); 
         }
     });
 
-    
     todoInput.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             addTodoButton.click();
         }
     });
+
+    clearAllButton.addEventListener('click', function() {
+        todoList.innerHTML = '';  
+        updateTodoCount(); 
+    });
+
+
+    updateTodoCount();
 });
-
-
